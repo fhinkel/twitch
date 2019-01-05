@@ -63,11 +63,13 @@ const maxGap = (arr) => {
     return maxDiff;
 }
 
-// n numbers, k = max - min = range of all numbers
-// n = 3 => n-1 intervals
-// k = 6
-// => maxDiff >= k/(n-1)
-//
+const randomInput = (n) => {
+    let arr = [];
+    for (let i = 0; i < n; i++) {
+        arr.push((Math.random() > 0.5 ? 1 : -1) * (Math.random() * 100000));
+    }
+    return arr;
+}
 
 const test = (arr) => {
     if (maxGapNLogN(arr) !== maxGap(arr)) {
@@ -76,6 +78,36 @@ const test = (arr) => {
         throw new Error();
     }
 }
+
+test(randomInput(20));
+test(randomInput(200));
+test(randomInput(2000));
+
+const perfTest = (n) => {
+    console.log(`Array with ${n} elements:`)
+    let arr = randomInput(n);
+    let before = Date.now();
+    maxGapNLogN(arr);
+    let after = Date.now();
+    console.log(`n log(n) takes ${(after - before) / 1000} seconds`);
+    
+    before = Date.now();
+    maxGap(arr);
+    after = Date.now();
+    console.log(`Linear takes ${(after - before) / 1000} seconds`);
+    console.log();
+}
+
+perfTest(10);
+perfTest(100);
+perfTest(1000);
+perfTest(10000);
+perfTest(5000000);
+perfTest(10000000);
+perfTest(20000000);
+
+
+
 
 test([2, 6, 8]);
 test([-2, 6, -8]);
