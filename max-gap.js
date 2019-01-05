@@ -31,7 +31,7 @@ const maxGap = (arr) => {
     let range = max - min;
     let lowerBound = range / (n - 1);
 
-    let buckets = [];
+    let buckets = []; // n-1 buckets => linear space complexity
     for (let i = 0; i < n; i++) {
         let index = Math.floor((arr[i] - min) / lowerBound);
         if (!buckets[index]) {
@@ -81,7 +81,9 @@ test([2, 6, 8]);
 test([-2, 6, -8]);
 test([20, 1, 17, 3, 16, 2, 7]);
 test([-20, 1, 17, -3, 16, 2, 7]);
-// test([20, 1.1, 17, 3.5, -16, 2, 7]);
+test([20, 1.1, 17, 3.5, -16, 2, 7]);
+test([]);
+test([2]);
 
 if (maxGapNLogN([2, 6, 8]) !== 4) {
     throw new Error();
