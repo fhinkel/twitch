@@ -33,7 +33,7 @@ const maxGap = (arr) => {
 
     let buckets = [];
     for (let i = 0; i < n; i++) {
-        let index = Math.floor(arr[i] / lowerBound);
+        let index = Math.floor((arr[i] - min) / lowerBound);
         if (!buckets[index]) {
             buckets[index] = {};
             buckets[index].left = arr[i];
@@ -69,10 +69,19 @@ const maxGap = (arr) => {
 // => maxDiff >= k/(n-1)
 //
 
-
-if (maxGapNLogN([2, 6, 8]) !== maxGap([2, 6, 8])) {
-    throw new Error();
+const test = (arr) => {
+    if (maxGapNLogN(arr) !== maxGap(arr)) {
+        console.log(arr);
+        console.log(`Expected ${maxGapNLogN(arr)} to equal ${maxGap(arr)}`);
+        throw new Error();
+    }
 }
+
+test([2, 6, 8]);
+test([-2, 6, -8]);
+test([20, 1, 17, 3, 16, 2, 7]);
+test([-20, 1, 17, -3, 16, 2, 7]);
+// test([20, 1.1, 17, 3.5, -16, 2, 7]);
 
 if (maxGapNLogN([2, 6, 8]) !== 4) {
     throw new Error();
