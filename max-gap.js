@@ -1,3 +1,5 @@
+// Video: https://www.youtube.com/watch?v=oZyomw_N70o
+
 // Given an unsorted array of numbers, find the maximum difference 
 // between the successive elements in its sorted form.
 // Linear time (and linear space)!
