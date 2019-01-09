@@ -5,20 +5,11 @@
 // Linear time (and linear space)!
 
 // Runtime complexity is n*log(n)
-const maxGapNLogN = (arr) => {
-    arr.sort((a, b) => a - b); // O(nlog(n)) - comparison sort
-    // O(n+k) counting sort, k = max - min
-    let maxDiff = 0;
-    if (arr.length < 2) {
-        return 0;
-    }
+const maxGapNLogN = input =>
+  input
+    .sort((a, b) => a - b)
+    .reduce((acc, cur, idx, src) => Math.max(acc, idx > 0 ? cur - src[idx - 1] : 0), 0);
 
-    for (let i = 1; i < arr.length; i++) { // O(n)
-        let diff = arr[i] - arr[i - 1];
-        maxDiff = Math.max(maxDiff, diff);
-    }
-    return maxDiff;
-}
 
 // linear time complexity
 const maxGap = (arr) => {
@@ -92,7 +83,7 @@ const perfTest = (n) => {
     maxGapNLogN(arr);
     let after = Date.now();
     console.log(`n log(n) takes ${(after - before) / 1000} seconds`);
-    
+
     before = Date.now();
     maxGap(arr);
     after = Date.now();
@@ -104,13 +95,13 @@ perfTest(10);
 perfTest(100);
 perfTest(1000);
 perfTest(10000);
-// perfTest(5000000);
-// perfTest(10000000);
-// perfTest(20000000);
+perfTest(5000000);
+perfTest(10000000);
+perfTest(20000000);
 
 
 
-
+test([-1, 0, 10]);
 test([2, 6, 8]);
 test([-2, 6, -8]);
 test([20, 1, 17, 3, 16, 2, 7]);
@@ -118,6 +109,7 @@ test([-20, 1, 17, -3, 16, 2, 7]);
 test([20, 1.1, 17, 3.5, -16, 2, 7]);
 test([]);
 test([2]);
+test([21, 41, 17, 45, 9, 17]);
 
 if (maxGapNLogN([2, 6, 8]) !== 4) {
     throw new Error();
@@ -138,7 +130,8 @@ if (maxGapNLogN([20]) !== 0) {
 if (maxGapNLogN([]) !== 0) {
     throw new Error();
 }
-if (maxGapNLogN([5,7]) !== 2) {
+if (maxGapNLogN([5, 7]) !== 2) {
+    console.log(maxGapNLogN([5, 7]))
     throw new Error();
 }
 
