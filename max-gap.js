@@ -104,9 +104,9 @@ perfTest(10);
 perfTest(100);
 perfTest(1000);
 perfTest(10000);
-perfTest(5000000);
-perfTest(10000000);
-perfTest(20000000);
+// perfTest(5000000);
+// perfTest(10000000);
+// perfTest(20000000);
 
 
 
@@ -136,6 +136,9 @@ if (maxGapNLogN([20]) !== 0) {
     throw new Error();
 }
 if (maxGapNLogN([]) !== 0) {
+    throw new Error();
+}
+if (maxGapNLogN([5,7]) !== 2) {
     throw new Error();
 }
 
