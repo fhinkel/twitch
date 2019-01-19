@@ -94,19 +94,20 @@ const longestSubSequencePreprocessed = (s, words) => {
         let m = new Map();
         for (let i = 0; i < s.length; i++) {
             const char = s[i];
-            if (!m.has(char)) {
-                m.set(char, []);
-            }
-            m.set(char, [...m.get(char), i]);
+            // sparse [1,4]
+            // dense [1, 1, 4, 4, 4]
+            let prev = m.get(char) || [];
+            const n = i - prev.length + 1;
+            m.set(char, [...prev, ...Array(n).fill(i)]);
         }
         return m;
     }
 
     const isSubSequence = (word, m) => {
-        let index = -1;
+        let index = 0;
         for (const char of word) {
             let idxs = m.get(char) || [];
-            index = idxs.find(el => el > index);
+            index = idxs[index];
 
             if (index === undefined) {
                 return false;
