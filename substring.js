@@ -37,18 +37,44 @@ const longestSubSequenceRegExp = (s, words) => {
     return '';
 }
 
-const test = (s, words, expected) => {
-    const res = longestSubSequenceRegExp(s, words);
+// O(w*log(w) + n*w)
+const longestSubSequence = (s, words) => {
+
+    const isSubSequence = (s, word) => {
+        let index = -1;
+        for(const char of word) {
+            index = s.indexOf(char, index);
+            if(index === -1) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // O(w*log(w)) - w number of words
+    words.sort((a, b) => (b.length - a.length));
+
+    for (const word of words) {
+        if (isSubSequence(s, word)) {
+            return word;
+        }
+    }
+    return '';
+}
+
+const test = (f, s, words, expected) => {
+    const res = f(s, words);
     if (res !== expected) {
         console.log(`${res} != ${expected}`);
         throw new Error();
     }
 }
 
-test(s, words, 'apple');
-test('sfkjwfpbhadslsegsfd', words, 'bale');
+test(longestSubSequence, s, words, 'apple');
+test(longestSubSequenceRegExp, s, words, 'apple');
+test(longestSubSequence, 'sfkjwfpbhadslsegsfd', words, 'bale');
 // test('sfkjwfpbhaasdfjlwefkjasdfwfasdfwefdslsegsfd', ['afwefasfd', 'rgisd'], 'afwefasfd');
-test('', words, '');
-test(s, [], '');
-test(s, ['xxxx'], '');
-test(s, [s, ...words], s);
+test(longestSubSequence, '', words, '');
+test(longestSubSequence, s, [], '');
+test(longestSubSequence, s, ['xxxx'], '');
+test(longestSubSequence, s, [s, ...words], s);
