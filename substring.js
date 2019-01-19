@@ -62,6 +62,29 @@ const longestSubSequence = (s, words) => {
     return '';
 }
 
+const all = (left, right) => {
+    if(left.length === 0) {
+        return [right];
+    }
+
+    let char = left.slice(-1);
+    let withMiddleChar = all(left.slice(0, -1), char + right);
+    let withoutMiddleChar = all(left.slice(0, -1), right);
+    return [...withMiddleChar, ...withoutMiddleChar];
+}
+
+const longestExponential = (s, words) => {
+    let allSubSequences = all(s, '');
+    words.sort((a,b) => b.length - a.length);
+    for(const word of words) {
+        if (allSubSequences.includes(word)) {
+            return word;
+        }
+    }
+
+    return '';
+}
+
 const test = (f, s, words, expected) => {
     const res = f(s, words);
     if (res !== expected) {
@@ -73,8 +96,16 @@ const test = (f, s, words, expected) => {
 test(longestSubSequence, s, words, 'apple');
 test(longestSubSequenceRegExp, s, words, 'apple');
 test(longestSubSequence, 'sfkjwfpbhadslsegsfd', words, 'bale');
-// test('sfkjwfpbhaasdfjlwefkjasdfwfasdfwefdslsegsfd', ['afwefasfd', 'rgisd'], 'afwefasfd');
+test(longestSubSequence, 'sfkjwfpbhaasdfjlwefkjasdfwfasdfwefdslsegsfdxxx', ['afwefasfd', 'rgisd'], 'afwefasfd');
 test(longestSubSequence, '', words, '');
 test(longestSubSequence, s, [], '');
 test(longestSubSequence, s, ['xxxx'], '');
 test(longestSubSequence, s, [s, ...words], s);
+
+test(longestExponential, s, words, 'apple');
+test(longestExponential, 'sfkjwfpbhadslsegsfd', words, 'bale');
+// test(longestExponential, 'sfkjwfpbhaasdfjlwefkjasdfwfasdfwefdslsegsfd', ['afwefasfd', 'rgisd'], 'afwefasfd');
+test(longestExponential, '', words, '');
+test(longestExponential, s, [], '');
+test(longestExponential, s, ['xxxx'], '');
+test(longestExponential, s, [s, ...words], s);
