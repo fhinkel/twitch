@@ -62,17 +62,6 @@ const longestSubSequence = (s, words) => {
     return '';
 }
 
-
-
-// let g = gen();
-// console.log(g.next());
-// console.log('before the loop')
-// for (const res of g) {
-//     console.log('in loop: ')
-//     console.log(res);
-// }
-
-
 function* gen(left, right) {
     if (left.length === 0) {
         yield right;
@@ -97,6 +86,60 @@ const longestExponential = (s, words) => {
     return substrings.length > 0 ? substrings[0] : '';
 }
 
+
+const longestSubSequencePreprocessed = (s, words) => {
+
+    const buildIndexesByChar = (s) => {
+        // <char, indexes>
+        let m = new Map();
+        for (let i = 0; i < s.length; i++) {
+            const char = s[i];
+            if (!m.has(char)) {
+                m.set(char, []);
+            }
+            m.set(char, [...m.get(char), i]);
+        }
+        return m;
+    }
+
+    // finds next bigger index
+    const next = (index, idxs) =>  {
+        for (const i of idxs) {
+            if (i > index) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    const isSubSequence = (word, m) => {
+        let index = -1;
+        for (const char of word) {
+            if (!m.has(char)) {
+                return false;
+            }
+            let idxs = m.get(char);
+            index = next(index, idxs);
+
+            if (index === -1) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+    let m = buildIndexesByChar(s);
+    words.sort((a, b) => (b.length - a.length));
+
+    for (const word of words) {
+        if (isSubSequence(word, m)) {
+            return word;
+        }
+    }
+    return '';
+}
+
 const test = (f, s, words, expected) => {
     const res = f(s, words);
     if (res !== expected) {
@@ -113,6 +156,15 @@ test(longestSubSequence, '', words, '');
 test(longestSubSequence, s, [], '');
 test(longestSubSequence, s, ['xxxx'], '');
 test(longestSubSequence, s, [s, ...words], s);
+
+
+test(longestSubSequencePreprocessed, s, words, 'apple');
+test(longestSubSequencePreprocessed, 'sfkjwfpbhadslsegsfd', words, 'bale');
+test(longestSubSequencePreprocessed, 'sfkjwfpbhaasdfjlwefkjasdfwfasdfwefdslsegsfdxxx', ['afwefasfd', 'rgisd'], 'afwefasfd');
+test(longestSubSequencePreprocessed, '', words, '');
+test(longestSubSequencePreprocessed, s, [], '');
+test(longestSubSequencePreprocessed, s, ['xxxx'], '');
+test(longestSubSequencePreprocessed, s, [s, ...words], s);
 
 test(longestExponential, s, words, 'apple');
 // test(longestExponential, 'sfkjwfpbhadslsegsfd', words, 'bale');
