@@ -102,32 +102,18 @@ const longestSubSequencePreprocessed = (s, words) => {
         return m;
     }
 
-    // finds next bigger index
-    const next = (index, idxs) =>  {
-        for (const i of idxs) {
-            if (i > index) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
     const isSubSequence = (word, m) => {
         let index = -1;
         for (const char of word) {
-            if (!m.has(char)) {
-                return false;
-            }
-            let idxs = m.get(char);
-            index = next(index, idxs);
+            let idxs = m.get(char) || [];
+            index = idxs.find(el => el > index);
 
-            if (index === -1) {
+            if (index === undefined) {
                 return false;
             }
         }
         return true;
     }
-
 
     let m = buildIndexesByChar(s);
     words.sort((a, b) => (b.length - a.length));
