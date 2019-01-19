@@ -42,9 +42,9 @@ const longestSubSequence = (s, words) => {
 
     const isSubSequence = (s, word) => {
         let index = -1;
-        for(const char of word) {
+        for (const char of word) {
             index = s.indexOf(char, index);
-            if(index === -1) {
+            if (index === -1) {
                 return false;
             }
         }
@@ -62,27 +62,39 @@ const longestSubSequence = (s, words) => {
     return '';
 }
 
-const all = (left, right) => {
-    if(left.length === 0) {
-        return [right];
+
+
+// let g = gen();
+// console.log(g.next());
+// console.log('before the loop')
+// for (const res of g) {
+//     console.log('in loop: ')
+//     console.log(res);
+// }
+
+
+function* gen(left, right) {
+    if (left.length === 0) {
+        yield right;
+        return;
     }
 
     let char = left.slice(-1);
-    let withMiddleChar = all(left.slice(0, -1), char + right);
-    let withoutMiddleChar = all(left.slice(0, -1), right);
-    return [...withMiddleChar, ...withoutMiddleChar];
+    yield* gen(left.slice(0, -1), char + right);
+    yield* gen(left.slice(0, -1), right);
 }
 
+
 const longestExponential = (s, words) => {
-    let allSubSequences = all(s, '');
-    words.sort((a,b) => b.length - a.length);
-    for(const word of words) {
-        if (allSubSequences.includes(word)) {
-            return word;
+    let substrings = [];
+    const allSubStrings = gen(s, '');
+    for (const substring of allSubStrings) {
+        if (words.includes(substring)) {
+            substrings.push(substring);
         }
     }
-
-    return '';
+    substrings.sort((a, b) => b.length - a.length);
+    return substrings.length > 0 ? substrings[0] : '';
 }
 
 const test = (f, s, words, expected) => {
@@ -103,7 +115,7 @@ test(longestSubSequence, s, ['xxxx'], '');
 test(longestSubSequence, s, [s, ...words], s);
 
 test(longestExponential, s, words, 'apple');
-test(longestExponential, 'sfkjwfpbhadslsegsfd', words, 'bale');
+// test(longestExponential, 'sfkjwfpbhadslsegsfd', words, 'bale');
 // test(longestExponential, 'sfkjwfpbhaasdfjlwefkjasdfwfasdfwefdslsegsfd', ['afwefasfd', 'rgisd'], 'afwefasfd');
 test(longestExponential, '', words, '');
 test(longestExponential, s, [], '');
