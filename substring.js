@@ -14,13 +14,19 @@
 const s = "abppplee";
 const words = ["able", "ale", "apple", "bale", "kangaroo"];
 
-const isSubSequence = (s, word) => {
-    // 'abc' => 'a.*b.*c.*'
-    const match = s.match(word.split('').join('.*'));
-    return match ? true : false;
-}
 
-const longestSubSequence = (s, words) => {
+
+// n number of letters in s
+// O(w*log(w) + n*w)
+const longestSubSequenceRegExp = (s, words) => {
+
+    const isSubSequence = (s, word) => {
+        // 'abc' => 'a.*b.*c'
+        const match = s.match(word.split('').join('.*'));
+        return match ? true : false;
+    }
+
+    // O(w*log(w)) - w number of words
     words.sort((a, b) => (b.length - a.length));
 
     for (const word of words) {
@@ -32,7 +38,7 @@ const longestSubSequence = (s, words) => {
 }
 
 const test = (s, words, expected) => {
-    const res = longestSubSequence(s, words);
+    const res = longestSubSequenceRegExp(s, words);
     if (res !== expected) {
         console.log(`${res} != ${expected}`);
         throw new Error();
@@ -41,6 +47,7 @@ const test = (s, words, expected) => {
 
 test(s, words, 'apple');
 test('sfkjwfpbhadslsegsfd', words, 'bale');
+// test('sfkjwfpbhaasdfjlwefkjasdfwfasdfwefdslsegsfd', ['afwefasfd', 'rgisd'], 'afwefasfd');
 test('', words, '');
 test(s, [], '');
 test(s, ['xxxx'], '');
