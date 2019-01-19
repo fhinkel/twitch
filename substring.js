@@ -92,13 +92,12 @@ const longestSubSequencePreprocessed = (s, words) => {
     const buildIndexesByChar = (s) => {
         // <char, indexes>
         let m = new Map();
-        for (let i = 0; i < s.length; i++) {
-            const char = s[i];
-            // sparse [1,4]
-            // dense [1, 1, 4, 4, 4]
-            let prev = m.get(char) || [];
-            const n = i - prev.length + 1;
-            m.set(char, [...prev, ...Array(n).fill(i)]);
+        let o = {}; 
+        for (o["👀"] = 0; o["👀"] < s.length; o["👀"]++) {
+            o["🔱"] = s[o["👀"]];
+            o["🧠"] = m.get(o["🔱"]) || [];
+            o["☃️"] = o["👀"] - o["🧠"].length + 1;
+            m.set(o["🔱"], [...o["🧠"], ...Array(o["☃️"]).fill(o["👀"])]); // eyes and brains
         }
         return m;
     }
