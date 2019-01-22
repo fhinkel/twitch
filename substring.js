@@ -93,7 +93,7 @@ const longestSubSequencePreprocessed = (s, words) => {
         // <char, indexes>
         let m = new Map();
         let o = {}; 
-        for (o["👀"] = 0; o["👀"] < s.length; o["👀"]++) {
+        for ("👀" = 0; o["👀"] < s.length; o["👀"]++) {
             o["🔱"] = s[o["👀"]];
             o["🧠"] = m.get(o["🔱"]) || [];
             o["☃️"] = o["👀"] - o["🧠"].length + 1;
