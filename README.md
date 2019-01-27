@@ -20,4 +20,18 @@ Code: [substring.js](https://github.com/fhinkel/twitch/blob/master/substring.js)
 Given a string s and an array of words, find that longest word 
 that's a substring of s.
 
+# Leetcode, Codewars, Project Euler
+
+Video: [https://youtu.be/SiL6GmE0tTc](https://www.youtube.com/watch?v=SiL6GmE0tTc&list=PL65pp6Tpk690178KuYvWGSOnBAkDEBanD&index=6)
+
+Random selection of problems:  
+
+* Number of Islands, [https://leetcode.com/problems/number-of-islands/](https://leetcode.com/problems/number-of-islands/)
+* Jewels and Stones, [https://leetcode.com/problems/jewels-and-stones/](https://leetcode.com/problems/jewels-and-stones/)
+* Vowel Count, [https://www.codewars.com/kata/54ff3102c1bad923760001f3](https://www.codewars.com/kata/54ff3102c1bad923760001f3)
+* Even Fibonacci Numbers, [https://projecteuler.net/problem=2](https://projecteuler.net/problem=2)
+* Sum Square Difference, [https://projecteuler.net/problem=6](https://projecteuler.net/problem=6)  
+* 1000-Digit Fibonacci Number, [https://projecteuler.net/problem=25](https://projecteuler.net/problem=25)
+* Counting Sundays, [https://projecteuler.net/problem=19](https://projecteuler.net/problem=19)  
+
 [//]: # (I'm solving typical coding problems you would be asked to solve during an interview. These puzzles are a lot of fun and there's always something new to learn.**Today's problem** Given an unsorted array, find the maximum difference between the successive elements in its sorted form.)

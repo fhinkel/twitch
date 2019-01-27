@@ -14,7 +14,6 @@ const sundays = () => {
         }
     }
     console.log(res);
-    // 100 * 12 = 1200 / 7  ~ 200
 }
 
 sundays()
