@@ -1,16 +1,3 @@
-//        6
-//      /   \
-//     4      3
-//    /\      /\  
-//   9  1  null 8
-
-// Traversing the tree
-// Iterative, breadth-first search, level order traversal [6, 4, 3, 9, 1, null, 8]
-// Recursive, depth-first search
-// [6, 4, 9, 1, 3, null, 8] pre order
-// [9, 4, 1 , 6, null, 3, 8] in order
-// [9, 1, 4, null, 8, 3, 6] post order
-
 let node = {
     val: 6,
     left: null,
@@ -20,10 +7,65 @@ let node = {
 const root = { val: 6 };
 root.left = { val: 4 };
 root.right = { val: 3 };
-root.left.left = { val: 9 };
+root.left.left = { val: -9 };
 root.left.right = { val: 1 };
-root.right = { val: 3 };
 root.right.right = { val: 8 };
+root.left.left.left = { val: 100 };
+
+//        6
+//      /   \
+//     4      3
+//    /\       \  
+//   -9  1       8
+//   /
+// 100
+
+// Given a binary tree in which each node 
+// element contains a number. Find the maximum 
+// possible sum from one leaf node to another.
+
+const maxSumUntilNode = (node, currentMax) => {
+    if (!node) {
+        return 0;
+    }
+    if (!node.left && !node.right) {
+        return node.val;
+    }
+    if (node.left && node.right) {
+        const maxLeft = maxSumUntilNode(node.left, currentMax);
+        const maxRight = maxSumUntilNode(node.right, currentMax);
+        currentMax.val = Math.max(currentMax.val, maxLeft + maxRight + node.val);
+        return Math.max(maxLeft, maxRight) + node.val;
+    }
+    if (!node.left) {
+        return maxSumUntilNode(node.right, currentMax) + node.val;
+    }
+    if (!node.right) {
+        return maxSumUntilNode(node.left, currentMax) + node.val;
+    }
+}
+
+const maxSum = (root) => {
+    if (!root || !root.left || !root.right) {
+        return Number.NEGATIVE_INFINITY;
+    }
+    let max = { val: Number.NEGATIVE_INFINITY };
+
+    maxSumUntilNode(root, max);
+    return max.val;
+}
+
+console.log(maxSum(root));
+
+
+// Traversing the tree
+// Iterative, breadth-first search, level order traversal [6, 4, 3, 9, 1, null, 8]
+// Recursive, depth-first search
+// [6, 4, 9, 1, 3, null, 8] pre order
+// [9, 4, 1 , 6, null, 3, 8] in order
+// [9, 1, 4, null, 8, 3, 6] post order
+
+
 
 // // Inorder
 // const inorder = (node) => {
@@ -100,15 +142,8 @@ const makeTree = (inorder, postorder) => {
     return root;
 }
 
-const tree = makeTree([9,3,15,20,7], [9,15,7,20,3]);
+const tree = makeTree([9, 3, 15, 20, 7], [9, 15, 7, 20, 3]);
 console.log(tree);
-
-// Given inorder and postorder traversal of a tree, construct the binary tree.
-// Note:
-// You may assume that duplicates do not exist in the tree.
-// inorder = [9,3,15,20,7]
-// postorder = [9,15,7,20,3]
-
 
 // Given a singly linked list where elements are 
 // sorted in ascending order, convert it to a height balanced BST.
@@ -116,11 +151,46 @@ console.log(tree);
 // is defined as a binary tree in which the depth 
 // of the two subtrees of every node never differ by more than 1.
 // Given the sorted linked list: [-10,-3,0,5,9],
+// -10
+//   \
+//   -3
+//    \
+//     0
+//      \
+//      5
+//       \
+//        9
+
+//     0
+//    / \
+//  -3   5
+//  /     \
+// -10     9
+
+//     0
+//    / \
+//  -3   9
+//  /   /
+// -10  5
 
 
-// Given a binary tree in which each node 
-// element contains a number. Find the maximum 
-// possible sum from one leaf node to another.
+//     -3
+//    / \
+//  -10   5
+//       / \
+//      0   9
+
+//      5
+//    /  \
+//   -3   9
+//  /  \
+// -10  0 
+// Solution: https://leetcode.com/problems/convert-sorted-list-to-binary-search-tree
+
+
+
+
+
 
 // Find the maximum distance
 
