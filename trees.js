@@ -25,60 +25,83 @@ root.left.right = { val: 1 };
 root.right = { val: 3 };
 root.right.right = { val: 8 };
 
-// Inorder
-const inorder = (node) => {
-    if (node === undefined) {
-        return;
-    }
-    inorder(node.left);
-    console.log(node.val);
-    inorder(node.right);
-}
-inorder(root);
+// // Inorder
+// const inorder = (node) => {
+//     if (node === undefined) {
+//         return;
+//     }
+//     inorder(node.left);
+//     console.log(node.val);
+//     inorder(node.right);
+// }
+// inorder(root);
 
-// Preorder
-const preorder = (node) => {
-    if (node === undefined) {
-        return;
-    }
-    console.log(node.val);
-    preorder(node.left);
-    preorder(node.right);
-}
-preorder(root);
+// // Preorder
+// const preorder = (node) => {
+//     if (node === undefined) {
+//         return;
+//     }
+//     console.log(node.val);
+//     preorder(node.left);
+//     preorder(node.right);
+// }
+// preorder(root);
 
-// Postorder
-const postorder = (node) => {
-    if (node === undefined) {
-        return;
-    }
-    postorder(node.left);
-    postorder(node.right);
-    console.log(node.val);
-}
-postorder(root);
+// // Postorder
+// const postorder = (node) => {
+//     if (node === undefined) {
+//         return;
+//     }
+//     postorder(node.left);
+//     postorder(node.right);
+//     console.log(node.val);
+// }
+// postorder(root);
 
-// Level Order Traversal
-const levelOrder = (root) => {
-    const queue = [];
+// // Level Order Traversal
+// const levelOrder = (root) => {
+//     const queue = [];
 
-    queue.push(root);
-    while (queue.length !== 0) {
-        const node = queue.shift();
-        if (node === undefined) {
-            continue;
-        }
-        console.log(node.val);
-        queue.push(node.left, node.right);
-    }
-}
+//     queue.push(root);
+//     while (queue.length !== 0) {
+//         const node = queue.shift();
+//         if (node === undefined) {
+//             continue;
+//         }
+//         console.log(node.val);
+//         queue.push(node.left, node.right);
+//     }
+// }
 
-levelOrder(root);
+// levelOrder(root);
 
 // Given inorder and postorder traversal of a tree, construct the binary tree.
-// inorder = [9,3,15,20,7]
-// postorder = [9,15,7,20,3]
+// const inorderInput = [9,3,15,20,7]
+// const postorderInput = [9,15,7,20,3] // left, right, parent
 
+//      3
+//     / \
+//    9   20
+//        /\
+//      15  7
+
+const makeTree = (inorder, postorder) => {
+    if (inorder.length === 0) {
+        return null;
+    }
+    let val = postorder[postorder.length - 1]; // last entry
+    let index = inorder.indexOf(val);
+
+    const root = { val };
+
+    root.left = makeTree(inorder.slice(0, index), postorder.slice(0, index));
+    root.right = makeTree(inorder.slice(index + 1), postorder.slice(index, -1));
+
+    return root;
+}
+
+const tree = makeTree([9,3,15,20,7], [9,15,7,20,3]);
+console.log(tree);
 
 // Given inorder and postorder traversal of a tree, construct the binary tree.
 // Note:
