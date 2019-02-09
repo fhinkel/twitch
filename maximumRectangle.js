@@ -47,6 +47,75 @@ const largestRectangleQuad = (a) => {
     return maxArea;
 }
 
+
+// Given an array of integers, find the nearest smaller number for every 
+// element such that the smaller element is on left side.
+const nearestSmallerLeft = (a) => {
+    const res = [];
+    const stack = [];
+    stack.peek = () => {
+        return stack[stack.length - 1];
+    }
+
+    for (let i = 0; i < a.length; i++) {
+        while (stack.length !== 0 && a[stack.peek()] >= a[i]) {
+            stack.pop();
+        }
+        if (stack.length === 0) {
+            res.push(-1);
+        } else {
+            res.push(stack.peek());
+        }
+        stack.push(i);
+    }
+
+    return res;
+}
+
+
+const nearestSmallerRight = (a) => {
+    const res = [];
+    const stack = [];
+    stack.peek = () => {
+        return stack[stack.length - 1];
+    }
+
+    for (let i = a.length - 1; i >= 0; i--) {
+        while (stack.length !== 0 && a[stack.peek()] >= a[i]) {
+            stack.pop();
+        }
+        if (stack.length === 0) {
+            res.push(a.length);
+        } else {
+            res.push(stack.peek());
+        }
+        stack.push(i);
+    }
+
+    return res.reverse();
+}
+
+console.log(nearestSmallerLeft([2, 1, 5, 6, 2, 3]));
+console.log(nearestSmallerRight([2, 1, 5, 6, 2, 3]));
+
+// O(n) 
+const largestRectangleLin = (a) => {
+    let maxArea = 0;
+    const leftNearest = nearestSmallerLeft(a);
+    const rightNearest = nearestSmallerRight(a);
+    for (let i = 0; i < a.length; i++) {
+        const h = a[i];
+        let left = leftNearest[i];
+        let right = rightNearest[i];
+        const area = h * (right - left - 1);
+        maxArea = Math.max(maxArea, area);
+    }
+    return maxArea;
+}
+
+console.log(largestRectangleLin([2, 1, 5, 6, 2, 3]));
+
+
 console.log(largestRectangle([2, 1, 5, 6, 2, 3])); // 10
 console.log(largestRectangle([2, 1, 0, 6, 2, 3])); //6
 console.log(largestRectangle([2, 1, 0, 8, 2, 3])); //8
@@ -59,6 +128,12 @@ console.log(largestRectangleQuad([2, 1, 0, 8, 2, 3])); //8
 console.log(largestRectangleQuad([2, 1, 0, 6, 2, 2, 2, 2, 2, 2])); //14
 // n = 1000, 1000000
 
+console.log(largestRectangleLin([2, 1, 5, 6, 2, 3])); // 10
+console.log(largestRectangleLin([2, 1, 0, 6, 2, 3])); //6
+console.log(largestRectangleLin([2, 1, 0, 8, 2, 3])); //8
+console.log(largestRectangleLin([2, 1, 0, 6, 2, 2, 2, 2, 2, 2])); //14
+// n = 1000, 1000
+
 const test = (a) => {
     let before = performance.now();
     let quad = largestRectangleQuad(a);
@@ -68,10 +143,10 @@ const test = (a) => {
     console.log(`Quadratic for ${a.length} elements took ${seconds} seconds.`);
 
     before = performance.now();
-    let cube = largestRectangle(a);
+    let cube = largestRectangleLin(a);
     after = performance.now();
     seconds = Math.floor((after - before) / 1000);
-    console.log(`Cubic for ${a.length} elements took ${seconds} seconds.`);
+    console.log(`Linear for ${a.length} elements took ${seconds} seconds.`);
 
     if (quad !== cube) {
         console.log(`${a}, ${quad} != ${cube}`);
@@ -91,13 +166,11 @@ const randomArray = (n) => {
 test([2, 1, 5, 6, 2, 3]);
 test([2, 1, 22, 4, 3, 1, 6, 2, 4, 2, 4, 65, 6, 2, 3]);
 test(randomArray(20));
-test(randomArray(200));
+test(randomArray(3000));
+test(randomArray(2000000));
 
 
 
 
 
 
-
-// Given an array of integers, find the nearest smaller number for every 
-// element such that the smaller element is on left side.
