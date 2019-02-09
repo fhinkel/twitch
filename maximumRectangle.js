@@ -4,6 +4,7 @@
 
 // Input: [2,1,5,6,2,3]
 // Output: 10
+const { performance } = require('perf_hooks');
 
 // O(n^3)
 const largestRectangle = (a) => {
@@ -58,8 +59,39 @@ console.log(largestRectangleQuad([2, 1, 0, 8, 2, 3])); //8
 console.log(largestRectangleQuad([2, 1, 0, 6, 2, 2, 2, 2, 2, 2])); //14
 // n = 1000, 1000000
 
+const test = (a) => {
+    let before = performance.now();
+    let quad = largestRectangleQuad(a);
+    let after = performance.now();
+    let seconds = Math.floor((after - before) / 1000);
 
+    console.log(`Quadratic for ${a.length} elements took ${seconds} seconds.`);
 
+    before = performance.now();
+    let cube = largestRectangle(a);
+    after = performance.now();
+    seconds = Math.floor((after - before) / 1000);
+    console.log(`Cubic for ${a.length} elements took ${seconds} seconds.`);
+
+    if (quad !== cube) {
+        console.log(`${a}, ${quad} != ${cube}`);
+        throw new Error();
+    }
+    console.log('done')
+}
+
+const randomArray = (n) => {
+    let a = [];
+    for (let i = 0; i < n; i++) {
+        a.push(Math.floor(Math.random() * 1000));
+    }
+    return a;
+}
+
+test([2, 1, 5, 6, 2, 3]);
+test([2, 1, 22, 4, 3, 1, 6, 2, 4, 2, 4, 65, 6, 2, 3]);
+test(randomArray(20));
+test(randomArray(200));
 
 
 
