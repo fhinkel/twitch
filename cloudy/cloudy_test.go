@@ -3,6 +3,7 @@ package cloudy
 import (
 	"io/ioutil"
 	"net/http/httptest"
+	"strings"
 	"testing"
 )
 
@@ -22,7 +23,7 @@ func TestMyFunc(t *testing.T) {
 	}
 	defer resp.Body.Close()
 
-	if got, want := string(body), "Hello, world!\n"; got != want {
-		t.Errorf("resp.Body: got %q; want %q", got, want)
+	if got, want := string(body), "....................,~+I7ZO88888888OZ7+"; !strings.HasPrefix(got, want) {
+		t.Errorf("resp.Body: got %q; want %q ...", got, want)
 	}
 }
