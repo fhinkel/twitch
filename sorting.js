@@ -13,6 +13,45 @@ const testMergeSort = (a) => {
     // console.log(res);
 }
 
+const testBogoSort = (a) => {
+    const original = [...a];
+    const res = [...bogoSort(a)];
+    a.sort((a, b) => a - b);
+    for (let i = 0; i < res.length; i++) {
+        if (res[i] !== a[i]) {
+            console.log(`${original} got sorted as ${res}`);
+            throw new Error();
+        }
+    }
+    console.log(res);
+}
+
+const bogoSort = (a) => {
+    const isSorted = (a) => {
+        let prev = Number.NEGATIVE_INFINITY;
+        for (let i = 0; i < a.length; i++) {
+            if (a[i] < prev) {
+                return false;
+            }
+            prev = a[i];
+        }
+        return true;
+    }
+
+    const shuffle = (a) => {
+        for (let i = a.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [a[i], a[j]] = [a[j], a[i]];
+        }
+        return a;
+    }
+
+    while (!isSorted(a)) {
+        a = shuffle(a);
+    }
+    return a;
+}
+
 // Merge two sorted arrays
 const merge = (sortedLeft, sortedRight) => {
     let res = [];
@@ -55,7 +94,7 @@ const mergeSort = (a) => {
     if (a.length < 2) {
         return a;
     }
-    
+
     let middle = Math.floor(a.length / 2);
     let sortedLeft = mergeSort(a.slice(0, middle));
     let sortedRight = mergeSort(a.slice(middle));
@@ -72,3 +111,9 @@ testMergeSort([]);
 testMergeSort([1, 2, 3, 4]);
 testMergeSort([5, 3, 8, 3, 5, 1, 1, 89, 17])
 testMergeSort([5, -13, 8, 3, 42, 100000, 5, -1, 1, 89, 17])
+
+testBogoSort([2]);
+testBogoSort([]);
+testBogoSort([1, 2, 3, 4]);
+testBogoSort([5, 3, 8, 3, 5, 1, 1, 89, 17])
+testBogoSort([5, -13, 8, 3, 42, 100000, 5, -1, 1, 89, 17])
