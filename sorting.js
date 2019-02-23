@@ -1,16 +1,20 @@
 // Mergesort, Quicksort, Heapsort
 
-const testMergeSort = (a) => {
+const testSort = (a, f) => {
     const original = a.slice();
-    const res = mergeSort(a);
+    const res = f(a).slice();
     a.sort((a, b) => a - b);
-    for (let i = 0; i < res.length; i++) {
+    if (res.length !== a.length) {
+        console.log(`${original} got sorted as ${res}`);
+        throw new Error();
+    }
+    for (let i = 0; i < a.length; i++) {
         if (res[i] !== a[i]) {
             console.log(`${original} got sorted as ${res}`);
             throw new Error();
         }
     }
-    // console.log(res);
+    console.log(res);
 }
 
 const testBogoSort = (a) => {
@@ -101,19 +105,102 @@ const mergeSort = (a) => {
     return merge(sortedLeft, sortedRight);
 }
 
-testMergeFunction([1, 3, 5], [2, 4, 6]);
-testMergeFunction([1, 3, 5, 7, 9], [2, 4, 6]);
-testMergeFunction([1, 3, 5], [2, 4, 6, 8, 10]);
-testMergeFunction([], [2, 4, 6]);
-testMergeFunction([1, 3, 4, 5, 8], [2, 4, 6, 8, 10]);
-testMergeSort([2]);
-testMergeSort([]);
-testMergeSort([1, 2, 3, 4]);
-testMergeSort([5, 3, 8, 3, 5, 1, 1, 89, 17])
-testMergeSort([5, -13, 8, 3, 42, 100000, 5, -1, 1, 89, 17])
+class Heap {
+    constructor() {
+        this.elements = [];
+    }
+
+    //      1
+    //     2 3
+    //    45 67
+    //  89 1011 1213 1415
+    // child of i: 2*i, 2*i+1
+
+
+    //     0
+    //    1 2
+    //   34 56
+    // 78 910 1112 1314
+
+    bubbleup(i) {
+        let parent = Math.floor((i - 1) / 2);
+        const a = this.elements;
+        while (parent >= 0 && a[parent] > a[i]) {
+            [a[parent], a[i]] = [a[i], a[parent]];
+            i = parent;
+            parent = Math.floor((i - 1) / 2);
+        }
+    }
+
+    push(e) {
+        this.elements.push(e);
+        this.bubbleup(this.size() - 1);
+    }
+
+    sinkdown(i) {
+        const leftChild = i * 2 + 1;
+        const rightChild = i * 2 + 2;
+        const a = this.elements;
+        let swap = null;
+        if (leftChild < this.size() && a[leftChild] < a[i]) {
+            swap = leftChild;
+        }
+        if (rightChild < this.size() && a[rightChild] < (swap ? a[leftChild] : a[i])) {
+            swap = rightChild;
+        }
+        if (!swap) {
+            return;
+        }
+        [a[i], a[swap]] = [a[swap], a[i]];
+
+        this.sinkdown(swap);
+    }
+
+    pop() {
+        if (this.size() === 0) {
+            throw new Error('Cannot pop on empty heap');
+        }
+        let min = this.elements[0];
+        let last = this.elements.pop();
+
+        if (this.size() > 0) {
+            this.elements[0] = last;
+            this.sinkdown(0);
+        }
+
+        return min;
+    }
+
+    size() {
+        return this.elements.length;
+    }
+}
+
+const heapSort = (a) => {
+    let res = [];
+    let heap = new Heap();
+    a.forEach(e => heap.push(e));
+    while (heap.size() !== 0) {
+        res.push(heap.pop());
+    }
+    return res;
+}
+
+testSort([2], mergeSort);
+testSort([], mergeSort);
+testSort([1, 2, 3, 4], mergeSort);
+testSort([5, 3, 8, 3, 5, 1, 1, 89, 17], mergeSort)
+testSort([5, -13, 8, 3, 42, 100000, 5, -1, 1, 89, 17], mergeSort)
+
+testSort([2], heapSort);
+testSort([], heapSort);
+testSort([1, 2, 3, 4], heapSort);
+testSort([1, 2, 3, 4, 5, 8, 9, 12, 13, 15, 16], heapSort);
+testSort([5, 3, 8, 3, 5, 1, 1, 89, 17], heapSort)
+testSort([5, -13, 8, 3, 42, 100000, 5, -1, 1, 89, 17], heapSort)
 
 testBogoSort([2]);
 testBogoSort([]);
 testBogoSort([1, 2, 3, 4]);
-testBogoSort([5, 3, 8, 3, 5, 1, 1, 89, 17])
-testBogoSort([5, -13, 8, 3, 42, 100000, 5, -1, 1, 89, 17])
+// testBogoSort([5, 3, 8, 3, 5, 1, 1, 89, 17])
+// testBogoSort([5, -13, 8, 3, 42, 100000, 5, -1, 1, 89, 17])
