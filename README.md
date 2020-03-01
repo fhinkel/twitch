@@ -1,4 +1,4 @@
-Code samples from [twitch.tv/fhinkel](twitch.tv/fhinkel)
+Code samples from [twitch.tv/fhinkel](https://twitch.tv/fhinkel)
 
 # Sorting
 Video: [https://www.youtube.com/watch?v=oZyomw_N70o](https://www.youtube.com/watch?v=oZyomw_N70o)
